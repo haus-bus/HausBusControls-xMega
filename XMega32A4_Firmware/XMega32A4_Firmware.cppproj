@@ -301,7 +301,6 @@
   <ItemGroup>
     <Folder Include="HbcUnits\HwUnitBoards\" />
     <Folder Include="HbcUnits\HwUnits\" />
-    <Folder Include="HwProtocols\" />
     <Folder Include="HbcUnits\" />
     <Folder Include="HbcUnits\Rules" />
     <Folder Include="SwFramework\" />
@@ -312,6 +311,7 @@
     <Folder Include="SwFramework\Time\" />
     <Folder Include="SwFramework\Tracing\" />
     <Folder Include="Xmega\" />
+    <Folder Include="Xmega\Protocols" />
     <Folder Include="Xmega\Peripherals\" />
   </ItemGroup>
   <ItemGroup>
@@ -330,58 +330,6 @@
     <Compile Include="..\HbcUnits\HwUnitBoards\SystemBoards.h">
       <SubType>compile</SubType>
       <Link>HbcUnits\HwUnitBoards\SystemBoards.h</Link>
-    </Compile>
-    <Compile Include="..\HwProtocols\Dht22.cpp">
-      <SubType>compile</SubType>
-      <Link>HwProtocols\Dht22.cpp</Link>
-    </Compile>
-    <Compile Include="..\HwProtocols\Dht22.h">
-      <SubType>compile</SubType>
-      <Link>HwProtocols\Dht22.h</Link>
-    </Compile>
-    <Compile Include="..\HwProtocols\HwProtocols.h">
-      <SubType>compile</SubType>
-      <Link>HwProtocols\HwProtocols.h</Link>
-    </Compile>
-    <Compile Include="..\HwProtocols\IrDecoder.cpp">
-      <SubType>compile</SubType>
-      <Link>HwProtocols\IrDecoder.cpp</Link>
-    </Compile>
-    <Compile Include="..\HwProtocols\IrDecoder.h">
-      <SubType>compile</SubType>
-      <Link>HwProtocols\IrDecoder.h</Link>
-    </Compile>
-    <Compile Include="..\HwProtocols\MonitoredInputHw.cpp">
-      <SubType>compile</SubType>
-      <Link>HwProtocols\MonitoredInputHw.cpp</Link>
-    </Compile>
-    <Compile Include="..\HwProtocols\MonitoredInputHw.h">
-      <SubType>compile</SubType>
-      <Link>HwProtocols\MonitoredInputHw.h</Link>
-    </Compile>
-    <Compile Include="..\HwProtocols\OneWire.cpp">
-      <SubType>compile</SubType>
-      <Link>HwProtocols\OneWire.cpp</Link>
-    </Compile>
-    <Compile Include="..\HwProtocols\OneWire.h">
-      <SubType>compile</SubType>
-      <Link>HwProtocols\OneWire.h</Link>
-    </Compile>
-    <Compile Include="..\HwProtocols\RS485Hw.cpp">
-      <SubType>compile</SubType>
-      <Link>HwProtocols\RS485Hw.cpp</Link>
-    </Compile>
-    <Compile Include="..\HwProtocols\RS485Hw.h">
-      <SubType>compile</SubType>
-      <Link>HwProtocols\RS485Hw.h</Link>
-    </Compile>
-    <Compile Include="..\HwProtocols\SoftTwi.cpp">
-      <SubType>compile</SubType>
-      <Link>HwProtocols\SoftTwi.cpp</Link>
-    </Compile>
-    <Compile Include="..\HwProtocols\SoftTwi.h">
-      <SubType>compile</SubType>
-      <Link>HwProtocols\SoftTwi.h</Link>
     </Compile>
     <Compile Include="..\HbcUnits\HwUnits\AnalogInputUnit.cpp">
       <SubType>compile</SubType>
@@ -619,6 +567,14 @@
       <SubType>compile</SubType>
       <Link>SwFramework\Object.h</Link>
     </Compile>
+    <Compile Include="..\SwFramework\Protocols\Dali.h">
+      <SubType>compile</SubType>
+      <Link>SwFramework\Protocols\Dali.h</Link>
+    </Compile>
+    <Compile Include="..\SwFramework\Protocols\Dht22.h">
+      <SubType>compile</SubType>
+      <Link>SwFramework\Protocols\Dht22.h</Link>
+    </Compile>
     <Compile Include="..\SwFramework\Protocols\HBCP.cpp">
       <SubType>compile</SubType>
       <Link>SwFramework\Protocols\HBCP.cpp</Link>
@@ -627,9 +583,49 @@
       <SubType>compile</SubType>
       <Link>SwFramework\Protocols\HBCP.h</Link>
     </Compile>
+    <Compile Include="..\SwFramework\Protocols\IrDecoder.h">
+      <SubType>compile</SubType>
+      <Link>SwFramework\Protocols\IrDecoder.h</Link>
+    </Compile>
+    <Compile Include="..\SwFramework\Protocols\KnxHw.h">
+      <SubType>compile</SubType>
+      <Link>SwFramework\Protocols\KnxHw.h</Link>
+    </Compile>
+    <Compile Include="..\SwFramework\Protocols\ModBusTcp.cpp">
+      <SubType>compile</SubType>
+      <Link>SwFramework\Protocols\ModBusTcp.cpp</Link>
+    </Compile>
+    <Compile Include="..\SwFramework\Protocols\ModBusTcp.h">
+      <SubType>compile</SubType>
+      <Link>SwFramework\Protocols\ModBusTcp.h</Link>
+    </Compile>
+    <Compile Include="..\SwFramework\Protocols\MonitoredInputHw.h">
+      <SubType>compile</SubType>
+      <Link>SwFramework\Protocols\MonitoredInputHw.h</Link>
+    </Compile>
+    <Compile Include="..\SwFramework\Protocols\OneWire.h">
+      <SubType>compile</SubType>
+      <Link>SwFramework\Protocols\OneWire.h</Link>
+    </Compile>
     <Compile Include="..\SwFramework\Protocols\Protocols.h">
       <SubType>compile</SubType>
       <Link>SwFramework\Protocols\Protocols.h</Link>
+    </Compile>
+    <Compile Include="..\SwFramework\Protocols\RS485Hw.h">
+      <SubType>compile</SubType>
+      <Link>SwFramework\Protocols\RS485Hw.h</Link>
+    </Compile>
+    <Compile Include="..\SwFramework\Protocols\Snmp.cpp">
+      <SubType>compile</SubType>
+      <Link>SwFramework\Protocols\Snmp.cpp</Link>
+    </Compile>
+    <Compile Include="..\SwFramework\Protocols\Snmp.h">
+      <SubType>compile</SubType>
+      <Link>SwFramework\Protocols\Snmp.h</Link>
+    </Compile>
+    <Compile Include="..\SwFramework\Protocols\SoftTwi.h">
+      <SubType>compile</SubType>
+      <Link>SwFramework\Protocols\SoftTwi.h</Link>
     </Compile>
     <Compile Include="..\SwFramework\Reactive.cpp">
       <SubType>compile</SubType>
@@ -1023,6 +1019,22 @@
       <SubType>compile</SubType>
       <Link>Xmega\PortPin.h</Link>
     </Compile>
+    <Compile Include="..\Xmega\Protocols\Dht22.cpp">
+      <SubType>compile</SubType>
+      <Link>Xmega\Protocols\Dht22.cpp</Link>
+    </Compile>
+    <Compile Include="..\Xmega\Protocols\IrDecoder.cpp">
+      <SubType>compile</SubType>
+      <Link>Xmega\Protocols\IrDecoder.cpp</Link>
+    </Compile>
+    <Compile Include="..\Xmega\Protocols\OneWire.cpp">
+      <SubType>compile</SubType>
+      <Link>Xmega\Protocols\OneWire.cpp</Link>
+    </Compile>
+    <Compile Include="..\Xmega\Protocols\SoftTwi.cpp">
+      <SubType>compile</SubType>
+      <Link>Xmega\Protocols\SoftTwi.cpp</Link>
+    </Compile>
     <Compile Include="..\Xmega\PwmOutput.cpp">
       <SubType>compile</SubType>
       <Link>Xmega\PwmOutput.cpp</Link>
@@ -1047,6 +1059,10 @@
       <SubType>compile</SubType>
       <Link>Xmega\UserSignature.h</Link>
     </Compile>
+    <Compile Include="..\Xmega\Protocols\RS485Hw.cpp">
+      <SubType>compile</SubType>
+	  <Link>Xmega\Protocols\RS485Hw.cpp</Link>
+    </Compile>	
     <Compile Include="IrSupport.cpp">
       <SubType>compile</SubType>
     </Compile>

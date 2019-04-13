@@ -13,9 +13,10 @@
 #include <LogicalButton.h>
 #include <Security/ModuleId.h>
 #include <Peripherals/TimerCounter.h>
+#include <Peripherals/Usart.h>
 #include <Gateway.h>
-#include <SoftTwi.h>
-#include <RS485Hw.h>
+#include <Protocols/SoftTwi.h>
+#include <Protocols/RS485Hw.h>
 
 
 const ModuleId moduleId = { "$MOD$ PBS      ",

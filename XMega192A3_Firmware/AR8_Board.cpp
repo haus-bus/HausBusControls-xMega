@@ -9,16 +9,16 @@
 #include "AR8SystemHw.h"
 #include "Enc28j60.h"
 
-#include <Dali.h>
 #include <DigitalOutput.h>
 #include <PortPin.h>
-#include <RS485Hw.h>
-#include <SoftTwi.h>
+#include <Protocols/RS485Hw.h>
+#include <Protocols/SoftTwi.h>
 #include <Peripherals/DmaChannel.h>
 #include <Peripherals/DmaController.h>
 #include <Peripherals/EventSystem.h>
 #include <Peripherals/IoPort.h>
 #include <Peripherals/WatchDog.h>
+#include <Peripherals/Usart.h>
 #include <Release.h>
 
 IrDecoder* irDecoder( 0 );

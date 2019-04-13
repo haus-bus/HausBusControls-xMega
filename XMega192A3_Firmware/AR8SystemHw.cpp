@@ -20,14 +20,16 @@
 #include <Peripherals/Eeprom.h>
 #include <Peripherals/EventSystem.h>
 #include <Peripherals/TimerCounter.h>
+#include <Peripherals/Usart.h>
 #include <Protocols/IpStack/UdpConnection.h>
 #include <Protocols/Ethernet/MAC.h>
+#include <Protocols/SoftTwi.h>
+#include <Protocols/RS485Hw.h>
 #include <Gateway.h>
 #include <HbcIpStackManager.h>
 #include <HbcConfiguration.h>
 
-#include <SoftTwi.h>
-#include <RS485Hw.h>
+
 
 void putc( char c )
 {

@@ -9,8 +9,7 @@
 #define Electronics_SystemBoards_AR8_AR8_Boards_AR8_Boards_H
 
 #include <DefaultTypes.h>
-#include <IrDecoder.h>
-#include <TwiHw.h>
+#include <Protocols/IrDecoder.h>
 #include <Security/ModuleId.h>
 #include "AR8.h"
 #include <Peripherals/TimerCounter.h>

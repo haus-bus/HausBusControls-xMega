@@ -9,7 +9,7 @@
 #define Electronics_SystemBoards_MS6_MS6_Boards_IrSupport_IrSupport_H
 
 #include <DefaultTypes.h>
-#include <IrDecoder.h>
+#include <Protocols/IrDecoder.h>
 
 class PortPin;
 
