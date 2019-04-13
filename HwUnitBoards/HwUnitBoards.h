@@ -62,7 +62,9 @@ enum SlotType
    DOUBLE_SWITCH = 0x07,
    DIMMER_30 = 0x0A,
    DIMMER_31 = 0x0B,
-   MAX_SLOT_TYPES
+   MAX_SLOT_TYPES,
+
+   NOT_CONFIGURED = 0xFF,
 };
 
 // Turn off a power load generates a current spike. So wait some time to prevent errors in communication.

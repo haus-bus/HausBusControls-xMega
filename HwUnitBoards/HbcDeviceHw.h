@@ -10,9 +10,9 @@
 
 #include "HwUnitBoards.h"
 
+#include <Peripherals/Flash.h>
 #include <ApplicationTable.h>
 #include <UserSignature.h>
-#include <GlobalInterrupt.h>
 #include <IStream.h>
 
 class Checksum;
@@ -39,7 +39,7 @@ class HbcDeviceHw
 
       ////    Operations    ////
 
-      inline void enableInterrupts();
+      void enableInterrupts();
 
       inline static Flash::address_t findModuleIdPosition( bool loaderModId );
 
@@ -58,7 +58,7 @@ class HbcDeviceHw
 
       inline static uint8_t getFckE()
       {
-         uint8_t fcke = Flash::readUserSignature( 1 );
+         uint8_t fcke = UserSignature::read( 1 );
          if ( fcke == 0xFF )
          {
             return OLD_BOARDS;
@@ -83,12 +83,6 @@ class HbcDeviceHw
 
       static const uint8_t debugLevel;
 };
-
-inline void HbcDeviceHw::enableInterrupts()
-{
-   PMIC.CTRL |= PMIC_LOLVLEN_bm | PMIC_MEDLVLEN_bm | PMIC_HILVLEN_bm;
-   GlobalInterrupt::enable();
-}
 
 inline Flash::address_t HbcDeviceHw::findModuleIdPosition(
    bool loaderModId )

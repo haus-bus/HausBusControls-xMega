@@ -6,10 +6,11 @@
  */
 
 #include "HbcDeviceHw.h"
-#include <Security/Checksum.h>
-#include <FlashString.h>
+#include <GlobalInterrupt.h>
 #include <Tracing/Logger.h>
 #include <Security/ModuleId.h>
+#include <Peripherals/InterruptController.h>
+
 
 const uint8_t HbcDeviceHw::debugLevel( DEBUG_LEVEL_OFF );
 
@@ -41,6 +42,13 @@ bool HbcDeviceHw::getModuleId( uint8_t index, ModuleId* moduleId )
    return false;
 }
 
+void HbcDeviceHw::enableInterrupts()
+{
+   InterruptController::enableAllInterruptLevel();
+   GlobalInterrupt::enable();
+}
+
+#ifdef __AVR__
 
 #include <Peripherals/Oscillator.h>
 #include <Peripherals/Clock.h>
@@ -85,3 +93,5 @@ lowLevelInit( void )
 
    Eeprom::MemoryMapped::enable();
 }
+
+#endif
