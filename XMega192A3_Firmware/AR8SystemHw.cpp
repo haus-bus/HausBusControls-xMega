@@ -178,6 +178,12 @@ void AR8SystemHw::configureSlots()
             break;
          }
 
+         case UNUSED_SLOT:
+         case NOT_CONFIGURED:
+         {
+            break;
+         }
+
          default:
          {
             WARN_4( "not supported slotType: ", (uint8_t)slotType, " for slot", slot );
