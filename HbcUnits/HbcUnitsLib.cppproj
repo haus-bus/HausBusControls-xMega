@@ -1,0 +1,500 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>7.0</ProjectVersion>
+    <ToolchainName>com.Atmel.AVRGCC8.CPP</ToolchainName>
+    <ProjectGuid>ece6c7e3-ee26-4d79-826b-08594b9ad897</ProjectGuid>
+    <avrdevice>ATxmega192A3U</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>StaticLibrary</OutputType>
+    <Language>CPP</Language>
+    <OutputFileName>lib$(MSBuildProjectName)</OutputFileName>
+    <OutputFileExtension>.a</OutputFileExtension>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <AvrGccProjectExtensions>
+    </AvrGccProjectExtensions>
+    <AssemblyName>HbcUnitsLib</AssemblyName>
+    <Name>HbcUnitsLib</Name>
+    <RootNamespace>HbcUnitsLib</RootNamespace>
+    <ToolchainFlavour>Native</ToolchainFlavour>
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <OverrideVtor>false</OverrideVtor>
+    <CacheFlash>true</CacheFlash>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress>0x20000000</RamSnippetAddress>
+    <UncachedRange />
+    <preserveEEPROM>true</preserveEEPROM>
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
+    <BootSegment>2</BootSegment>
+    <ResetRule>0</ResetRule>
+    <eraseonlaunchrule>0</eraseonlaunchrule>
+    <EraseKey />
+    <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
+    <avrtoolserialnumber />
+    <avrdeviceexpectedsignature>0x1E9744</avrdeviceexpectedsignature>
+    <com_atmel_avrdbg_tool_simulator>
+      <ToolOptions xmlns="">
+        <InterfaceProperties>
+        </InterfaceProperties>
+      </ToolOptions>
+      <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
+      <ToolNumber xmlns="">
+      </ToolNumber>
+      <ToolName xmlns="">Simulator</ToolName>
+    </com_atmel_avrdbg_tool_simulator>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'x192A3U' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+  <avrgcc.common.Device>-mmcu=atxmega192a3u -B "%24(PackRepoDir)\atmel\XMEGAA_DFP\1.1.68\gcc\dev\atxmega192a3u"</avrgcc.common.Device>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.symbols.DefSymbols><ListValues><Value>NDEBUG</Value></ListValues></avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths><ListValues><Value>%24(PackRepoDir)\atmel\XMEGAA_DFP\1.1.68\include</Value></ListValues></avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcccpp.compiler.symbols.DefSymbols><ListValues>
+  <Value>_DEBUG_</Value>
+  <Value>USE_DHT</Value>
+  <Value>USE_OW</Value>
+  <Value>USE_IR</Value>
+  <Value>USE_ANALOGIN</Value>
+  <Value>USE_MDIGIN</Value>
+  <Value>F_CPU=32000000</Value>
+  <Value>CONTROLLER_ID=AR8_ID</Value>
+</ListValues></avrgcccpp.compiler.symbols.DefSymbols>
+  <avrgcccpp.compiler.directories.IncludePaths><ListValues><Value>%24(PackRepoDir)\atmel\XMEGAA_DFP\1.1.68\include</Value><Value>../../xMegaFramework</Value><Value>../../SwFramework</Value><Value>..</Value></ListValues></avrgcccpp.compiler.directories.IncludePaths>
+  <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
+  <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+  <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.miscellaneous.OtherFlags>-std=c++11</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.linker.libraries.Libraries><ListValues><Value>libm</Value></ListValues></avrgcccpp.linker.libraries.Libraries>
+  <avrgcccpp.assembler.general.IncludePaths><ListValues><Value>%24(PackRepoDir)\atmel\XMEGAA_DFP\1.1.68\include</Value></ListValues></avrgcccpp.assembler.general.IncludePaths>
+</AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'x32A4U' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+  <avrgcc.common.Device>-mmcu=atxmega192a3u -B "%24(PackRepoDir)\atmel\XMEGAA_DFP\1.1.68\gcc\dev\atxmega192a3u"</avrgcc.common.Device>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.symbols.DefSymbols><ListValues><Value>NDEBUG</Value></ListValues></avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths><ListValues><Value>%24(PackRepoDir)\atmel\XMEGAA_DFP\1.1.68\include</Value></ListValues></avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcccpp.compiler.symbols.DefSymbols><ListValues><Value>_DEBUG_</Value><Value>USE_DHT</Value><Value>USE_OW</Value><Value>USE_IR</Value><Value>USE_ANALOGIN</Value><Value>USE_MDIGIN</Value></ListValues></avrgcccpp.compiler.symbols.DefSymbols>
+  <avrgcccpp.compiler.directories.IncludePaths><ListValues><Value>%24(PackRepoDir)\atmel\XMEGAA_DFP\1.1.68\include</Value><Value>../../xMegaFramework</Value><Value>../../SwFramework</Value><Value>..</Value></ListValues></avrgcccpp.compiler.directories.IncludePaths>
+  <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
+  <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+  <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.miscellaneous.OtherFlags>-std=c++11</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.linker.libraries.Libraries><ListValues><Value>libm</Value></ListValues></avrgcccpp.linker.libraries.Libraries>
+  <avrgcccpp.assembler.general.IncludePaths><ListValues><Value>%24(PackRepoDir)\atmel\XMEGAA_DFP\1.1.68\include</Value></ListValues></avrgcccpp.assembler.general.IncludePaths>
+</AvrGccCpp>
+    </ToolchainSettings>
+    <OutputPath>bin\x32A4U\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="BaseSensorUnit.cpp">
+      <SubType>compile</SubType>
+      <Link>BaseSensorUnit.cpp</Link>
+    </Compile>
+    <Compile Include="BaseSensorUnit.h">
+      <SubType>compile</SubType>
+      <Link>BaseSensorUnit.h</Link>
+    </Compile>
+    <Compile Include="ConfigurationManager.cpp">
+      <SubType>compile</SubType>
+      <Link>ConfigurationManager.cpp</Link>
+    </Compile>
+    <Compile Include="ConfigurationManager.h">
+      <SubType>compile</SubType>
+      <Link>ConfigurationManager.h</Link>
+    </Compile>
+    <Compile Include="DaliLine.cpp">
+      <SubType>compile</SubType>
+      <Link>DaliLine.cpp</Link>
+    </Compile>
+    <Compile Include="DaliLine.h">
+      <SubType>compile</SubType>
+      <Link>DaliLine.h</Link>
+    </Compile>
+    <Compile Include="DebugOptions.cpp">
+      <SubType>compile</SubType>
+      <Link>DebugOptions.cpp</Link>
+    </Compile>
+    <Compile Include="DebugOptions.h">
+      <SubType>compile</SubType>
+      <Link>DebugOptions.h</Link>
+    </Compile>
+    <Compile Include="ErrorMessage.cpp">
+      <SubType>compile</SubType>
+      <Link>ErrorMessage.cpp</Link>
+    </Compile>
+    <Compile Include="ErrorMessage.h">
+      <SubType>compile</SubType>
+      <Link>ErrorMessage.h</Link>
+    </Compile>
+    <Compile Include="Gateway.cpp">
+      <SubType>compile</SubType>
+      <Link>Gateway.cpp</Link>
+    </Compile>
+    <Compile Include="Gateway.h">
+      <SubType>compile</SubType>
+      <Link>Gateway.h</Link>
+    </Compile>
+    <Compile Include="HbcConfiguration.cpp">
+      <SubType>compile</SubType>
+      <Link>HbcConfiguration.cpp</Link>
+    </Compile>
+    <Compile Include="HbcConfiguration.h">
+      <SubType>compile</SubType>
+      <Link>HbcConfiguration.h</Link>
+    </Compile>
+    <Compile Include="HbcDevice.cpp">
+      <SubType>compile</SubType>
+      <Link>HbcDevice.cpp</Link>
+    </Compile>
+    <Compile Include="HbcDevice.h">
+      <SubType>compile</SubType>
+      <Link>HbcDevice.h</Link>
+    </Compile>
+    <Compile Include="HbcInterface.cpp">
+      <SubType>compile</SubType>
+      <Link>HbcInterface.cpp</Link>
+    </Compile>
+    <Compile Include="HbcInterface.h">
+      <SubType>compile</SubType>
+      <Link>HbcInterface.h</Link>
+    </Compile>
+    <Compile Include="HbcIpStackManager.cpp">
+      <SubType>compile</SubType>
+      <Link>HbcIpStackManager.cpp</Link>
+    </Compile>
+    <Compile Include="HbcIpStackManager.h">
+      <SubType>compile</SubType>
+      <Link>HbcIpStackManager.h</Link>
+    </Compile>
+    <Compile Include="HbcUnits.h">
+      <SubType>compile</SubType>
+      <Link>HbcUnits.h</Link>
+    </Compile>
+    <Compile Include="HwProtocols\Dht22.h">
+      <SubType>compile</SubType>
+      <Link>HwProtocols\Dht22.h</Link>
+    </Compile>
+    <Compile Include="HwProtocols\HwProtocols.h">
+      <SubType>compile</SubType>
+      <Link>HwProtocols\HwProtocols.h</Link>
+    </Compile>
+    <Compile Include="HwProtocols\IrDecoder.h">
+      <SubType>compile</SubType>
+      <Link>HwProtocols\IrDecoder.h</Link>
+    </Compile>
+    <Compile Include="HwProtocols\KnxHw.h">
+      <SubType>compile</SubType>
+      <Link>HwProtocols\KnxHw.h</Link>
+    </Compile>
+    <Compile Include="HwProtocols\MonitoredInputHw.h">
+      <SubType>compile</SubType>
+      <Link>HwProtocols\MonitoredInputHw.h</Link>
+    </Compile>
+    <Compile Include="HwProtocols\OneWire.h">
+      <SubType>compile</SubType>
+      <Link>HwProtocols\OneWire.h</Link>
+    </Compile>
+    <Compile Include="HwUnitBoards\DaliDimmerHw.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnitBoards\DaliDimmerHw.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnitBoards\DaliDimmerHw.h">
+      <SubType>compile</SubType>
+      <Link>HwUnitBoards\DaliDimmerHw.h</Link>
+    </Compile>
+    <Compile Include="HwUnitBoards\DimmerHw.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnitBoards\DimmerHw.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnitBoards\DimmerHw.h">
+      <SubType>compile</SubType>
+      <Link>HwUnitBoards\DimmerHw.h</Link>
+    </Compile>
+    <Compile Include="HwUnitBoards\HbcDeviceHw.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnitBoards\HbcDeviceHw.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnitBoards\HbcDeviceHw.h">
+      <SubType>compile</SubType>
+      <Link>HwUnitBoards\HbcDeviceHw.h</Link>
+    </Compile>
+    <Compile Include="HwUnitBoards\HwUnitBoards.h">
+      <SubType>compile</SubType>
+      <Link>HwUnitBoards\HwUnitBoards.h</Link>
+    </Compile>
+    <Compile Include="HwUnitBoards\IDimmerHw.h">
+      <SubType>compile</SubType>
+      <Link>HwUnitBoards\IDimmerHw.h</Link>
+    </Compile>
+    <Compile Include="HwUnitBoards\RollerShutterHw.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnitBoards\RollerShutterHw.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnitBoards\RollerShutterHw.h">
+      <SubType>compile</SubType>
+      <Link>HwUnitBoards\RollerShutterHw.h</Link>
+    </Compile>
+    <Compile Include="HwUnitBoards\SystemBoards.h">
+      <SubType>compile</SubType>
+      <Link>HwUnitBoards\SystemBoards.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\AnalogInputUnit.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\AnalogInputUnit.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\AnalogInputUnit.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\AnalogInputUnit.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\BatteryManager.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\BatteryManager.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\BatteryManager.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\BatteryManager.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\Button.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\Button.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\Button.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\Button.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\Counter.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\Counter.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\Counter.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\Counter.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\Dht.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\Dht.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\Dht.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\Dht.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\DigitalOutputUnit.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\DigitalOutputUnit.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\DigitalOutputUnit.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\DigitalOutputUnit.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\DigitalPort.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\DigitalPort.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\DigitalPort.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\DigitalPort.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\Dimmer.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\Dimmer.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\Dimmer.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\Dimmer.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\DS1307.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\DS1307.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\DS1307.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\DS1307.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\DS1820.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\DS1820.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\DS1820.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\DS1820.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\InternalTemperatureUnit.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\InternalTemperatureUnit.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\InternalTemperatureUnit.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\InternalTemperatureUnit.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\IrReceiver.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\IrReceiver.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\IrReceiver.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\IrReceiver.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\Led.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\Led.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\Led.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\Led.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\MonitoredDigitalInput.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\MonitoredDigitalInput.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\MonitoredDigitalInput.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\MonitoredDigitalInput.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\PortPinUnit.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\PortPinUnit.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\PortPinUnit.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\PortPinUnit.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\RollerShutter.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\RollerShutter.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\RollerShutter.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\RollerShutter.h</Link>
+    </Compile>
+    <Compile Include="HwUnits\UltrasonicDistanceMeter.cpp">
+      <SubType>compile</SubType>
+      <Link>HwUnits\UltrasonicDistanceMeter.cpp</Link>
+    </Compile>
+    <Compile Include="HwUnits\UltrasonicDistanceMeter.h">
+      <SubType>compile</SubType>
+      <Link>HwUnits\UltrasonicDistanceMeter.h</Link>
+    </Compile>
+    <Compile Include="IResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>IResponse.cpp</Link>
+    </Compile>
+    <Compile Include="IResponse.h">
+      <SubType>compile</SubType>
+      <Link>IResponse.h</Link>
+    </Compile>
+    <Compile Include="LoggerMemory.cpp">
+      <SubType>compile</SubType>
+      <Link>LoggerMemory.cpp</Link>
+    </Compile>
+    <Compile Include="LoggerMemory.h">
+      <SubType>compile</SubType>
+      <Link>LoggerMemory.h</Link>
+    </Compile>
+    <Compile Include="LogicalButton.cpp">
+      <SubType>compile</SubType>
+      <Link>LogicalButton.cpp</Link>
+    </Compile>
+    <Compile Include="LogicalButton.h">
+      <SubType>compile</SubType>
+      <Link>LogicalButton.h</Link>
+    </Compile>
+    <Compile Include="ModBusSlave.cpp">
+      <SubType>compile</SubType>
+      <Link>ModBusSlave.cpp</Link>
+    </Compile>
+    <Compile Include="ModBusSlave.h">
+      <SubType>compile</SubType>
+      <Link>ModBusSlave.h</Link>
+    </Compile>
+    <Compile Include="Release.h">
+      <SubType>compile</SubType>
+      <Link>Release.h</Link>
+    </Compile>
+    <Compile Include="Rules\PersistentRules.cpp">
+      <SubType>compile</SubType>
+      <Link>Rules\PersistentRules.cpp</Link>
+    </Compile>
+    <Compile Include="Rules\PersistentRules.h">
+      <SubType>compile</SubType>
+      <Link>Rules\PersistentRules.h</Link>
+    </Compile>
+    <Compile Include="Rules\Rule.cpp">
+      <SubType>compile</SubType>
+      <Link>Rules\Rule.cpp</Link>
+    </Compile>
+    <Compile Include="Rules\Rule.h">
+      <SubType>compile</SubType>
+      <Link>Rules\Rule.h</Link>
+    </Compile>
+    <Compile Include="Rules\RuleElement.cpp">
+      <SubType>compile</SubType>
+      <Link>Rules\RuleElement.cpp</Link>
+    </Compile>
+    <Compile Include="Rules\RuleElement.h">
+      <SubType>compile</SubType>
+      <Link>Rules\RuleElement.h</Link>
+    </Compile>
+    <Compile Include="Rules\RuleEngine.cpp">
+      <SubType>compile</SubType>
+      <Link>Rules\RuleEngine.cpp</Link>
+    </Compile>
+    <Compile Include="Rules\RuleEngine.h">
+      <SubType>compile</SubType>
+      <Link>Rules\RuleEngine.h</Link>
+    </Compile>
+    <Compile Include="SnmpAgent.cpp">
+      <SubType>compile</SubType>
+      <Link>SnmpAgent.cpp</Link>
+    </Compile>
+    <Compile Include="SnmpAgent.h">
+      <SubType>compile</SubType>
+      <Link>SnmpAgent.h</Link>
+    </Compile>
+    <Compile Include="SystemConditions.cpp">
+      <SubType>compile</SubType>
+      <Link>SystemConditions.cpp</Link>
+    </Compile>
+    <Compile Include="SystemConditions.h">
+      <SubType>compile</SubType>
+      <Link>SystemConditions.h</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="HwUnits" />
+    <Folder Include="HwUnitBoards" />
+    <Folder Include="HwProtocols" />
+    <Folder Include="Rules" />
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
+</Project>
