@@ -20,8 +20,6 @@ class CriticalSection;
 
 class Dhcp;
 
-class Enc28j60;
-
 class Event;
 
 class HBCP;
@@ -197,7 +195,7 @@ class HbcIpStackManager : public IpStackManager
 
       ////    Constructors and destructors    ////
 
-      HbcIpStackManager( Enc28j60& _stream );
+      HbcIpStackManager( IoStream& _stream );
 
       ////    Operations    ////
 
