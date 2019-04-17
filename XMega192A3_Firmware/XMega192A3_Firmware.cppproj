@@ -490,10 +490,6 @@
       <SubType>compile</SubType>
       <Link>SwFramework\DefaultTypes.h</Link>
     </Compile>
-    <Compile Include="..\SwFramework\Enc28j60.h">
-      <SubType>compile</SubType>
-      <Link>SwFramework\Enc28j60.h</Link>
-    </Compile>
     <Compile Include="..\SwFramework\EventDrivenUnit.h">
       <SubType>compile</SubType>
       <Link>SwFramework\EventDrivenUnit.h</Link>

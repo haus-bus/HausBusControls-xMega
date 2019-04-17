@@ -363,17 +363,14 @@ bool BooterHw::readMessageFromUdp()
 {
    if ( enc28j60.isInterruptPending() )
    {
-      uint16_t bytesTransferred = enc28j60.read( &transferBuffer, sizeof( transferBuffer ) );
-      if ( bytesTransferred )
+      if ( IStream::SUCCESS == enc28j60.read( &transferBuffer, sizeof( transferBuffer ) ) )
       {
          LanHeader* header = reinterpret_cast<LanHeader*>( transferBuffer.header );
          if ( header->udpHeader.isIpDatagramm() && header->udpHeader.isProtocollUdp()
             && header->udpHeader.isDestinationPort( UDP_PORT ) )
          {
-            if ( ( bytesTransferred == UDP_MIN_PACKET_SIZE )
-               || ( bytesTransferred == ( sizeof( transferBuffer ) - sizeof( transferBuffer.buffer )
-                                          - sizeof( transferBuffer.controlFrame )
-                                          + transferBuffer.controlFrame.getLength() ) ) )
+            uint16_t bytesTransferred = sizeof( EthernetHeader ) + header->udpHeader.getPacketSize();
+            if ( bytesTransferred == ( sizeof( LanHeader ) + transferBuffer.controlFrame.getLength() ) )
             {
                DEBUG_L3( endl, "data received: 0x", bytesTransferred );
                message = &transferBuffer.controlFrame;

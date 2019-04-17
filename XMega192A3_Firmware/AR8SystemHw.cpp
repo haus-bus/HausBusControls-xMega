@@ -28,6 +28,7 @@
 #include <Gateway.h>
 #include <HbcIpStackManager.h>
 #include <HbcConfiguration.h>
+#include <Enc28j60.h>
 
 
 
