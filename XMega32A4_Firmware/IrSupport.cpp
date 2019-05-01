@@ -15,10 +15,9 @@ static IrDecoder* irDecoder( 0 );
 
 INTERRUPT void TCE0_CCA_vect()
 {
-   TRACE_PORT_SET( TR_INT_PIN );
-#ifndef _TRACE_PORT_
+
    notifyBusy();
-#endif
+
    static uint16_t lastStamp = 0;
 
    // save pulse time
@@ -35,8 +34,6 @@ INTERRUPT void TCE0_CCA_vect()
       irDecoder->notifyEdge( edge, ( stamp - lastStamp ) & 0x7FFF );
    }
    lastStamp = stamp;
-
-   TRACE_PORT_CLEAR( TR_INT_PIN );
 }
 
 void configureInfraRedHw( PortPin portPin, IrDecoder* decoder )

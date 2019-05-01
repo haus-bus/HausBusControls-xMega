@@ -19,12 +19,11 @@ int main( int argc, char* argv[] )
 
 void notifyBusy()
 {
-   TRACE_PORT_SET( TR_IDLE_PIN );
+
 }
 
 void notifyIdle()
 {
-   TRACE_PORT_CLEAR( TR_IDLE_PIN );
 
 #ifndef _DEBUG_
    WatchDog::reset();
