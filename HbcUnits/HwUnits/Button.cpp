@@ -87,7 +87,7 @@ bool Button::notifyEvent( const Event& event )
          {
             enabledEvents.mask = configuration->getEvents().mask;
             getPortPin().setInverted( enabledEvents.bit.inverted );
-            enabledEvents.bit.inverted ? getPortPin().enablePulldown() : getPortPin().enablePullup();
+            getPortPin().enablePullup();
             SET_STATE_L1( RUNNING );
          }
          else
