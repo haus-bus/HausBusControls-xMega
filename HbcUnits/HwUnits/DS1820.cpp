@@ -125,7 +125,7 @@ void DS1820::run()
          isSelfPowered();
          startMeasurement();
          SET_STATE_L1( RUNNING );
-         setSleepTime( SystemTime::S );
+         SET_STATE_L2( START_MEASUREMENT );
       }
       else
       {
@@ -141,19 +141,29 @@ void DS1820::run()
    else if ( inRunning() )
    {
       Response event( getId() );
-      uint8_t error = readMeasurement();
-      if ( error )
+
+      if ( inSubState( START_MEASUREMENT ) )
       {
-         event.setErrorCode( error );
-         event.queue();
+         uint8_t error = startMeasurement();
+         if ( error )
+         {
+            event.setErrorCode( error );
+            event.queue();
+         }
+         setSleepTime( SystemTime::S );
+         SET_STATE_L2( READ_MEASURMENT );
       }
-      error = startMeasurement();
-      if ( error )
+      else // READ_MEASURMENT
       {
-         event.setErrorCode( error );
-         event.queue();
+         uint8_t error = readMeasurement();
+         if ( error )
+         {
+            event.setErrorCode( error );
+            event.queue();
+         }
+         setSleepTime( getMeasurementInterval() );
+         SET_STATE_L2( START_MEASUREMENT );
       }
-      setSleepTime( SystemTime::S* configuration->reportTimeBase );
    }
 
 }

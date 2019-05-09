@@ -23,17 +23,21 @@ void BaseSensorUnit::Response::setStatus( BaseSensorUnit::Status value )
    getParameter().status = value;
 }
 
+uint16_t BaseSensorUnit::getMeasurementInterval()
+{
+   if ( configuration && configuration->reportTimeBase )
+   {
+      return SystemTime::S* configuration->reportTimeBase;
+   }
+   return SystemTime::S* Configuration::DEFAULT_REPORT_TIME_BASE;
+}
+
 void BaseSensorUnit::notifyNewValue( BaseSensorUnit::Status newStatus )
 {
-   if ( !configuration )
+   if ( !configuration || !configuration->reportTimeBase )
    {
       lastStatus = newStatus;
       return;
-   }
-
-   if ( configuration->reportTimeBase == 0 )
-   {
-      SET_STATE_L1( IDLE );
    }
 
    uint8_t nextEvent = currentEvent;
@@ -168,11 +172,6 @@ bool BaseSensorUnit::handleRequest( HBCP* message )
       {
          DEBUG_H1( FSTR( ".getStatus()" ) );
          response.setStatus( lastStatus );
-         if ( inIdle() )
-         {
-            SET_STATE_L1( RUNNING );
-            setSleepTime( WAKE_UP );
-         }
       }
       else
       {

@@ -83,7 +83,7 @@ void Dht::handleRunning()
 
       errorCounter = 0;
    }
-   setSleepTime( SystemTime::S* configuration->reportTimeBase );
+   setSleepTime( getMeasurementInterval() );
 }
 
 bool Dht::notifyEvent( const Event& event )

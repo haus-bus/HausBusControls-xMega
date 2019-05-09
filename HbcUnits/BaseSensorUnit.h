@@ -26,6 +26,12 @@ class BaseSensorUnit : public Reactive
 
       typedef uint8_t Hysteresis;
 
+      enum SubStates
+      {
+         START_MEASUREMENT,
+         READ_MEASURMENT
+      };
+
       struct Status
       {
          int8_t value;
@@ -270,6 +276,8 @@ class BaseSensorUnit : public Reactive
 
       bool handleRequest( HBCP* message );
 
+      uint16_t getMeasurementInterval();
+
       ////    Additional operations    ////
 
    public:
@@ -277,6 +285,9 @@ class BaseSensorUnit : public Reactive
       inline void setConfiguration( EepromConfiguration* _config )
       {
          configuration = _config;
+
+         // force update of first measurement after startup
+         timeSinceReport = configuration->maxReportTime;
       }
 
    protected:
