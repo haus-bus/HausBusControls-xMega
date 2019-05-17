@@ -234,6 +234,8 @@ bool LoxoneGateway::notifyEvent( const Event& event )
 
          notifyMessageReceived( &cmd.controlFrame );
       }
+      // must return false if evData has no response to send
+      return false;
    }
    else
    {
@@ -271,7 +273,7 @@ IStream::Status LoxoneGateway::write( void* pData, uint16_t length, EventDrivenU
    {
       case ClassId::BUTTON:
       {
-         strcat( loxoneMsg, "KEY" );
+         strcat( loxoneMsg, "BTN" );
          strcat( loxoneMsg, MSG_TAG );
          strcat( loxoneMsg, instanceIdString );
          strcat( loxoneMsg, MSG_TAG );
@@ -320,7 +322,7 @@ IStream::Status LoxoneGateway::write( void* pData, uint16_t length, EventDrivenU
 
       case ClassId::TEMPERATURE:
       {
-         strcat( loxoneMsg, "TEMP" );
+         strcat( loxoneMsg, "TMP" );
          strcat( loxoneMsg, MSG_TAG );
          strcat( loxoneMsg, instanceIdString );
          strcat( loxoneMsg, MSG_TAG );
@@ -356,7 +358,7 @@ IStream::Status LoxoneGateway::write( void* pData, uint16_t length, EventDrivenU
 
       case ClassId::HUMIDITY:
       {
-         strcat( loxoneMsg, "HUMIDITY" );
+         strcat( loxoneMsg, "RHD" );
          strcat( loxoneMsg, MSG_TAG );
          strcat( loxoneMsg, instanceIdString );
          strcat( loxoneMsg, MSG_TAG );
