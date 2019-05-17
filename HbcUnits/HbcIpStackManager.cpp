@@ -6,6 +6,7 @@
  */
 
 #include "HbcIpStackManager.h"
+#include "LoxoneGateway.h"
 #include "ModBusSlave.h"
 #include <Protocols/Ethernet/ArpHeader.h>
 #include <Protocols/IpStack/ArpManager.h>
@@ -94,6 +95,12 @@ bool HbcIpStackManager::notifyEvent( const Event& event )
          if ( configuration->port )
          {
             new Gateway( UdpConnection::connect( IP::broadcast(), configuration->port, configuration->port, NULL ), Gateway::UDP );
+         }
+         if ( configuration->loxoneIp )
+         {
+            IP loxoneIp;
+            loxoneIp.setAddress( configuration->loxoneIp );
+            new LoxoneGateway( UdpConnection::connect( loxoneIp, Configuration::LOXONE_PORT, Configuration::LOXONE_PORT, NULL ) );
          }
       }
    }

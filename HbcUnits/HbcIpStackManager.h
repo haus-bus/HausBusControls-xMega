@@ -50,11 +50,13 @@ class HbcIpStackManager : public IpStackManager
       {
          public:
 
-            static const uint8_t DEFAULT_OPTIONS = 1;
+            static const uint8_t DEFAULT_OPTIONS = 4; // use dhcp
+
+            static const uint16_t LOXONE_PORT = 15557;
 
             struct Options
             {
-               bool udpPort9Only : 1;
+               bool udpPort9Only : 1;  // deprecated
 
                bool modBusTcp : 1;
 
@@ -75,6 +77,10 @@ class HbcIpStackManager : public IpStackManager
 
             uint16_t port;
 
+            uint32_t loxoneIp;
+
+            uint16_t reserve;
+
             ////    Operations    ////
 
             static inline Configuration getDefault()
@@ -84,12 +90,17 @@ class HbcIpStackManager : public IpStackManager
                   .ip = IP::defaultIp.address,
                   .option = { DEFAULT_OPTIONS },
                   .port = 0,
+                  .loxoneIp = 0,
                };
                return defaultConfiguration;
             }
 
             inline void checkAndCorrect()
             {
+               if ( option.bit.udpPort9Only )
+               {
+                  option.mask = DEFAULT_OPTIONS;
+               }
             }
       };
 
@@ -102,6 +113,10 @@ class HbcIpStackManager : public IpStackManager
             XEeprom<Configuration::Option> option;
 
             uint16_tx port;
+
+            uint32_tx loxoneIp;
+
+            uint16_tx reserve;
 
             inline Configuration::Options getOptions() const
             {

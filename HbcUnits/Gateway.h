@@ -53,6 +53,7 @@ class Gateway : public Reactive
          MODBUS = 3,
          RS485 = 4,
 
+         LOXONE = 13,
          UDP = 14,
          UDP_9 = 15,
          UNKNOWN = 0xFF
