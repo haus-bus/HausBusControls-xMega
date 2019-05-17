@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Erstellungszeit: 26. Mrz 2019 um 17:43
--- Server-Version: 10.1.23-MariaDB-9+deb9u1
--- PHP-Version: 7.0.30-0+deb9u1
+-- Erstellungszeit: 17. Mai 2019 um 09:48
+-- Server-Version: 10.1.37-MariaDB-0+deb9u1
+-- PHP-Version: 7.0.33-0+deb9u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -1012,10 +1012,10 @@ INSERT INTO `featurefunctionparams` (`id`, `featureFunctionId`, `name`, `type`, 
 (295, 160, 'mac2', 'BYTE', '', 'Standard'),
 (296, 160, 'mac1', 'BYTE', '', 'Standard'),
 (297, 160, 'mac0', 'BYTE', '', 'Standard'),
-(298, 161, 'IP0', 'BYTE', '', 'Standard'),
-(299, 161, 'IP1', 'BYTE', '', 'Standard'),
-(300, 161, 'IP2', 'BYTE', '', 'Standard'),
-(301, 161, 'IP3', 'BYTE', '', 'Standard'),
+(298, 161, 'IP0', 'BYTE', 'Eigene IP-Adresse im Format IP0.IP1.IP2.IP3, wenn per DHCP keine vergeben wurde. ', 'Standard'),
+(299, 161, 'IP1', 'BYTE', 'Eigene IP-Adresse im Format IP0.IP1.IP2.IP3, wenn per DHCP keine vergeben wurde. ', 'Standard'),
+(300, 161, 'IP2', 'BYTE', 'Eigene IP-Adresse im Format IP0.IP1.IP2.IP3, wenn per DHCP keine vergeben wurde. ', 'Standard'),
+(301, 161, 'IP3', 'BYTE', 'Eigene IP-Adresse im Format IP0.IP1.IP2.IP3, wenn per DHCP keine vergeben wurde. ', 'Standard'),
 (302, 162, 'IP0', 'BYTE', '', 'Standard'),
 (303, 162, 'IP1', 'BYTE', '', 'Standard'),
 (304, 162, 'IP2', 'BYTE', '', 'Standard'),
@@ -1218,7 +1218,15 @@ INSERT INTO `featurefunctionparams` (`id`, `featureFunctionId`, `name`, `type`, 
 (544, 269, 'index', 'BYTE', 'Die Variablen liegen mehrfach vor (32xBIT, 16xBYTE, 16xWORD). Mit dem index wird eine davon selektiert.', 'Standard'),
 (545, 270, 'type', 'ENUM', 'Gibt den Typ der Variable an, die hier gemeldet wird.', 'Standard'),
 (546, 270, 'index', 'BYTE', 'Die Variablen liegen mehrfach vor (32xBIT, 16xBYTE, 16xWORD). Der Index gibt an, welche hiermit gemeldet wird.', 'Standard'),
-(547, 270, 'value', 'WORD', 'Der Wert der Systemvariable.', 'Standard');
+(547, 270, 'value', 'WORD', 'Der Wert der Systemvariable.', 'Standard'),
+(548, 161, 'Loxon_IP0', 'BYTE', 'Loxone MiniServer IP-Adresse im Format IP0.IP1.IP2.IP3 (0.0.0.0 deaktiviert das Loxone Gateway 13)', 'Standard'),
+(549, 161, 'Loxon_IP1', 'BYTE', 'Loxone MiniServer IP-Adresse im Format IP0.IP1.IP2.IP3 (0.0.0.0 deaktiviert das Loxone Gateway 13)', 'Standard'),
+(550, 161, 'Loxon_IP2', 'BYTE', 'Loxone MiniServer IP-Adresse im Format IP0.IP1.IP2.IP3 (0.0.0.0 deaktiviert das Loxone Gateway 13)', 'Standard'),
+(551, 161, 'Loxon_IP3', 'BYTE', 'Loxone MiniServer IP-Adresse im Format IP0.IP1.IP2.IP3 (0.0.0.0 deaktiviert das Loxone Gateway 13)', 'Standard'),
+(552, 162, 'Loxone_IP0', 'BYTE', 'Loxone MiniServer IP-Adresse im Format IP0.IP1.IP2.IP3 (0.0.0.0 deaktiviert das Loxone Gateway 13)', 'Standard'),
+(553, 162, 'Loxone_IP1', 'BYTE', 'Loxone MiniServer IP-Adresse im Format IP0.IP1.IP2.IP3 (0.0.0.0 deaktiviert das Loxone Gateway 13)', 'Standard'),
+(554, 162, 'Loxone_IP2', 'BYTE', 'Loxone MiniServer IP-Adresse im Format IP0.IP1.IP2.IP3 (0.0.0.0 deaktiviert das Loxone Gateway 13)', 'Standard'),
+(555, 162, 'Loxone_IP3', 'BYTE', 'Loxone MiniServer IP-Adresse im Format IP0.IP1.IP2.IP3 (0.0.0.0 deaktiviert das Loxone Gateway 13)', 'Standard');
 
 -- --------------------------------------------------------
 
@@ -1539,7 +1547,7 @@ ALTER TABLE `featurefunctionenums`
 -- AUTO_INCREMENT für Tabelle `featurefunctionparams`
 --
 ALTER TABLE `featurefunctionparams`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=548;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=556;
 --
 -- AUTO_INCREMENT für Tabelle `featurefunctions`
 --
