@@ -44,6 +44,18 @@ class PortPin
 
       uint8_t getPin() const;
 
+      uint16_t waitPinState( uint16_t timeoutCount, bool state ) const;
+
+      inline uint16_t waitPinStateHigh( uint16_t timeoutCount )
+      {
+         return waitPinState( timeoutCount, true );
+      }
+
+      inline uint16_t waitPinStateLow( uint16_t timeoutCount )
+      {
+         return waitPinState( timeoutCount, false );
+      }
+
       inline uint8_t isInverted() const;
 
       inline void enablePullup()

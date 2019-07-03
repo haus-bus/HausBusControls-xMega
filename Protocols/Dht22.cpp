@@ -12,30 +12,71 @@
 const uint8_t Dht22::debugLevel( DEBUG_LEVEL_OFF );
 
 
-
 Dht22::Dht22( PortPin pin ) :
-   portPin( pin )
+   ioPin( pin )
 {
-   portPin.enablePullup();
+   ioPin.enablePullup();
 }
 
+void Dht22::startMeasurement()
+{
+   DEBUG_M1( FSTR( "start" ) );
+   DigitalOutput out( ioPin );
+}
+
+Dht22::Errors Dht22::waitForAck()
+{
+   CriticalSection doNotInterrupt;
+
+   ioPin.configInput();
+
+   // find the start of the ACK signal
+   uint8_t remaining = ioPin.waitPinStateHigh( COUNT_DELAY_BIT_US( ACK_TIMEOUT / 2 ) );
+   if ( !remaining )
+   {
+      DEBUG_M1( FSTR( "waitForAck not present" ) );
+      return NOT_PRESENT;
+   }
+
+   // find the transition of the ACK signal
+   remaining = ioPin.waitPinStateLow( COUNT_DELAY_BIT_US( ACK_TIMEOUT ) );
+   if ( !remaining )
+   {
+      DEBUG_M1( FSTR( "waitForAck 0 too long" ) );
+      return ACK_MISSING;
+   }
+
+   // find the end of the ACK signal
+   remaining = ioPin.waitPinStateHigh( COUNT_DELAY_BIT_US( ACK_TIMEOUT ) );
+   if ( !remaining )
+   {
+      DEBUG_M1( FSTR( "waitForAck 1 too long" ) );
+      return ACK_TOO_LONG;
+   }
+
+   // find the end of the ACK signal
+   remaining = ioPin.waitPinStateLow( COUNT_DELAY_BIT_US( ACK_TIMEOUT ) );
+   if ( !remaining )
+   {
+      DEBUG_M1( FSTR( "waitForDataSync too long" ) );
+      return SYNC_TIMEOUT;
+   }
+   return OK;
+}
+
+bool Dht22::isIdle()
+{
+   // wait if data line is not idle for max 250uSec
+   bool idle = ioPin.waitPinStateHigh( COUNT_DELAY_BIT_US( IDLE_TIMEOUT ) );
+   idle &= !ioPin.waitPinStateLow( COUNT_DELAY_BIT_US( IDLE_TIMEOUT ) );
+   return idle;
+}
 
 uint8_t Dht22::read( uint8_t* data )
 {
    DEBUG_H1( FSTR( "read" ) );
-   if ( !waitForIdle() )
-   {
-      DEBUG_M1( FSTR( "BUS_HUNG" ) );
-      return BUS_HUNG;
-   }
-
-   reset();
-
-   uint8_t* port = ( (uint8_t*) &portPin.getIoPort() ) + 8;
-   uint8_t pin = portPin.getPin();
 
    CriticalSection doNotInterrupt;
-   // test();
 
    Errors error = waitForAck();
    if ( error )
@@ -51,8 +92,7 @@ uint8_t Dht22::read( uint8_t* data )
          data[i] <<= 1;
          // wait for bit change, record timing
          // the lower phase length is not really specified, just >50us
-         uint16_t remainingTime = delayBit( COUNT_DELAY_BIT_US( 100 ), port, pin,
-                                            1 );
+         uint16_t remainingTime = ioPin.waitPinStateHigh( COUNT_DELAY_BIT_US( 100 ) );
          if ( !remainingTime )
          {
             // we are way out of timing spec
@@ -60,7 +100,7 @@ uint8_t Dht22::read( uint8_t* data )
             return SYNC_TIMEOUT;
          }
 
-         remainingTime = delayBit( COUNT_DELAY_BIT_US( 80 ), port, pin, 0 );
+         remainingTime = ioPin.waitPinStateLow( COUNT_DELAY_BIT_US( 80 ) );
          if ( !remainingTime )
          {
             // we are way out of timing spec
@@ -74,8 +114,7 @@ uint8_t Dht22::read( uint8_t* data )
          }
       }
    }
-   DEBUG_M4( FSTR( "Data: " ), data[4], '*', data[3] );
-   DEBUG_L4( '*', data[2], '*', data[1] );
+   DEBUG_M1( FSTR( "Data: " ) << data[4] << '-' << data[3] << '-' << data[2] << '-' << data[1] );
 
    // checksum
    if ( data[0] != (uint8_t) ( data[1] + data[2] + data[3] + data[4] ) )

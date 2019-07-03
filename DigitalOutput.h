@@ -16,7 +16,7 @@ class DigitalOutput : public DigitalInput
 
    public:
 
-      inline DigitalOutput( uint8_t _portNumber, uint8_t _pinNumber ) : DigitalInput( _portNumber, _pinNumber )
+      inline DigitalOutput( uint8_t _portNumber, uint8_t _pinNumber ) : DigitalInput( _portNumber, _pinNumber, false )
       {
          if ( isValid() )
          {
@@ -24,7 +24,7 @@ class DigitalOutput : public DigitalInput
          }
       }
 
-      inline DigitalOutput( PortPin _portPin ) : DigitalInput( _portPin )
+      inline DigitalOutput( PortPin _portPin ) : DigitalInput( _portPin, false )
       {
          if ( isValid() )
          {

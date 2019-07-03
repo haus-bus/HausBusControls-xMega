@@ -10,39 +10,38 @@
 
 const uint8_t OneWire::debugLevel( DEBUG_LEVEL_OFF );
 
-OneWire::OneWire( PortPin portPin ) : pin( portPin.getPin() ), ioPort( &portPin.getIoPort() )
+OneWire::OneWire( PortPin portPin ) : ioPin( portPin )
 {
-   ioPort->configure( pin, PORT_OPC_PULLUP_gc );
+   ioPin.enablePullup();
 }
 
-uint8_t OneWire::reset()
+OneWire::ErrorCodes OneWire::reset()
 {
-   ioPort->clearPins( pin );        // disable internal pull-up (maybe on from parasite)
-   ioPort->setPinsAsOutput( pin );  // pull OW-Pin low for 480us
+   DigitalOutput out( ioPin );   // disable internal pull-up (maybe on from parasite)
+   out.clear();                  // pull OW-Pin low for 480us
 
    _delay_us( 600 );
 
-   uint8_t err;
    {
       CriticalSection doNotInterrupt;
       // set Pin as input - wait for clients to pull low
-      ioPort->setPinsAsInput( pin );
+      ioPin.configInput();
 
-      _delay_us( 66 );
-
-      err = ioPort->isPinSet( pin );             // no presence detect
-      // nobody pulled to low, still high
+      if ( ioPin.waitPinStateLow( COUNT_DELAY_BIT_US( 66 ) ) == 0 )
+      {
+         // nobody pulled to low, still high
+         return PRESENCE_ERROR;
+      }
    }
 
    // after a delay the clients should release the line
    // and input-pin gets back to high due to pull-up-resistor
-   _delay_us( 480 - 66 );
-   if ( !ioPort->isPinSet( pin ) )               // short circuit
+   if ( ioPin.waitPinStateHigh( COUNT_DELAY_BIT_US( 480 ) ) == 0 )
    {
-      err = 1;
+      return BUS_HUNG_ERROR;
    }
-
-   return err;
+   _delay_us( 10 );  // recovery time
+   return NO_ERROR;
 }
 
 uint8_t OneWire::searchROM( uint8_t diff, uint8_t* id )
@@ -50,7 +49,7 @@ uint8_t OneWire::searchROM( uint8_t diff, uint8_t* id )
    uint8_t i, j, next_diff;
    uint8_t b;
 
-   if ( reset() )
+   if ( reset() != NO_ERROR )
    {
       return PRESENCE_ERROR;      // error, no device found
    }
@@ -133,26 +132,25 @@ uint8_t OneWire::sendReceiveBit( uint8_t bit )
 {
    CriticalSection doNotInterrupt;
    {
-      ioPort->setPinsAsOutput( pin ); // drive bus low
+      ioPin.configOutput(); // drive bus low
 
       _delay_us( RECOVERY_DELAY );    // Recovery-Time
       if ( bit )     // if bit is 1 set bus high (by ext. pull-up)
       {
-         ioPort->setPinsAsInput( pin );
+         ioPin.configInput();
       }
       _delay_us( READ_TIME_SLOT - RECOVERY_DELAY - IO_ACCESS_DELAY );
 
       // sample at end of read-timeslot
-      if ( !ioPort->isPinSet( pin ) )
+      if ( !ioPin.isSet() )
       {
          bit = 0;
       }
 
       _delay_us( BIT_TIME_SLOT - READ_TIME_SLOT );
-      ioPort->setPinsAsInput( pin );
+      ioPin.configInput();
    }
-   // bei langen Kabeln kann dieser Wert wohl auch um einiges größer sein! (recovery time)
-   _delay_us( 10 );
+   _delay_us( 10 );  // recovery time
 
    return bit;
 }
