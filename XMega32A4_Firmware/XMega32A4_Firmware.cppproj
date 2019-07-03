@@ -587,6 +587,10 @@
       <SubType>compile</SubType>
       <Link>SwFramework\Time\Calender.h</Link>
     </Compile>
+    <Compile Include="..\SwFramework\Time\SystemTime.h">
+      <SubType>compile</SubType>
+      <Link>SwFramework\Time\SystemTime.h</Link>
+    </Compile>
     <Compile Include="..\SwFramework\Time\Time.h">
       <SubType>compile</SubType>
       <Link>SwFramework\Time\Time.h</Link>
