@@ -158,7 +158,10 @@ void DigitalPort::configureHw()
 #ifdef USE_DHT
             else if ( pinFunction == ClassId::HUMIDITY )
             {
-               new Dht( subId + i + 1, PortPin( portNumber, i ) );
+               PortPin dhtPin( portNumber, i );
+               uint8_t instanceId = subId + i + 1;
+               new Dht( instanceId, dhtPin, true );
+               new Dht( instanceId, dhtPin, false );
             }
 #endif
 #ifdef USE_IR

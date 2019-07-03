@@ -6,11 +6,11 @@
  */
 
 #include "HbcIpStackManager.h"
+#include "LoxoneGateway.h"
 #include "ModBusSlave.h"
 #include <Protocols/Ethernet/ArpHeader.h>
 #include <Protocols/IpStack/ArpManager.h>
 #include <Protocols/IpStack/Dhcp.h>
-#include <Enc28j60.h>
 #include <Protocols/Ethernet/IcmpHeader.h>
 #include <Protocols/Ethernet/IP.h>
 #include <Protocols/Ethernet/MAC.h>
@@ -48,7 +48,7 @@ void HbcIpStackManager::Response::setCurrentIp()
    getParameter().ip = IP::local.getAddress();
 }
 
-HbcIpStackManager::HbcIpStackManager( Enc28j60& _stream )
+HbcIpStackManager::HbcIpStackManager( IoStream& _stream )
 {
    IpConnection::stream = &_stream;
    setId( ( ClassId::ETHERNET << 8 ) | 1 );
@@ -79,7 +79,8 @@ bool HbcIpStackManager::notifyEvent( const Event& event )
 
       if ( options.udpPort9Only )
       {
-         IpConnection::stream->setUdpPort9Filter();
+         char filter[] = "udp port 9";
+         IpConnection::stream->genericCommand( IoStream::SET_FILTER, filter );
       }
       else
       {
@@ -94,6 +95,12 @@ bool HbcIpStackManager::notifyEvent( const Event& event )
          if ( configuration->port )
          {
             new Gateway( UdpConnection::connect( IP::broadcast(), configuration->port, configuration->port, NULL ), Gateway::UDP );
+         }
+         if ( configuration->loxoneIp )
+         {
+            IP loxoneIp;
+            loxoneIp.setAddress( configuration->loxoneIp );
+            new LoxoneGateway( UdpConnection::connect( loxoneIp, Configuration::LOXONE_PORT, Configuration::LOXONE_PORT, NULL ) );
          }
       }
    }

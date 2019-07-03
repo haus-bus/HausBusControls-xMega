@@ -115,7 +115,7 @@ void Counter::tick()
    setSleepTime( SystemTime::MIN );
 
    // save the current value in eeprom to restore after reset
-   configuration->value = value;
+   configuration->value.update( value );
 
    if ( timeToReport )
    {

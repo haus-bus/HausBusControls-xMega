@@ -27,13 +27,7 @@ class AnalogInputUnit : public BaseSensorUnit
 
       ////    Operations    ////
 
-      virtual bool notifyEvent( const Event& event );
-
-      inline void* operator new( size_t size );
-
    private:
-
-      void run();
 
       ////    Additional operations    ////
 
@@ -41,6 +35,10 @@ class AnalogInputUnit : public BaseSensorUnit
 
 
    protected:
+
+      HwStatus readMeasurement();
+
+      HwStatus startMeasurement( uint16_t& duration );
 
       inline static const uint8_t getDebugLevel()
       {
@@ -68,10 +66,5 @@ class AnalogInputUnit : public BaseSensorUnit
    protected:
 
 };
-
-inline void* AnalogInputUnit::operator new( size_t size )
-{
-   return allocOnce( size );
-}
 
 #endif
