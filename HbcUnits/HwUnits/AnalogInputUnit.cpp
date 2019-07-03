@@ -14,36 +14,15 @@ AnalogInputUnit::AnalogInputUnit( PortPin portPin ) :
    Object::setId( ( ClassId::ANALOG_INPUT << 8 ) | ( ( portPin.getPortNumber() + 1 ) << 4 ) | ( portPin.getPinNumber() + 1 ) );
 }
 
-bool AnalogInputUnit::notifyEvent( const Event& event )
+BaseSensorUnit::HwStatus AnalogInputUnit::startMeasurement( uint16_t& duration )
 {
-   if ( event.isEvWakeup() )
-   {
-      run();
-   }
-   else if ( event.isEvMessage() )
-   {
-      return handleRequest( event.isEvMessage()->getMessage() );
-   }
-
-   return false;
+   // no need to wait for results
+   duration = 0;
+   return BaseSensorUnit::OK;
 }
 
-void AnalogInputUnit::run()
+BaseSensorUnit::HwStatus AnalogInputUnit::readMeasurement()
 {
-   if ( inStartUp() )
-   {
-      setConfiguration( ConfigurationManager::getConfiguration<EepromConfiguration>( id ) );
-      if ( configuration )
-      {
-         SET_STATE_L1( RUNNING );
-      }
-      else
-      {
-         terminate();
-         ErrorMessage::notifyOutOfMemory( id );
-         return;
-      }
-   }
    uint16_t value = analogInput.getValue();
 
    DEBUG_H2( FSTR( ".value: 0x" ), value );
@@ -52,5 +31,5 @@ void AnalogInputUnit::run()
    status.value = ( value / 1000 );
    status.centiValue = ( ( value % 1000 ) / 10 );
    notifyNewValue( status );
-   setSleepTime( SystemTime::MIN );
+   return BaseSensorUnit::OK;
 }

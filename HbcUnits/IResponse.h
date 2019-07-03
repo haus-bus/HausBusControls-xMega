@@ -24,6 +24,8 @@ class IResponse : public HBCP
 
    public:
 
+      static const uint8_t MAX_ERROR_DATA = ControlFrame::DEFAULT_DATA_LENGTH - 2;
+
       IResponse( uint16_t id );
 
       IResponse( uint16_t id, const HBCP& request );

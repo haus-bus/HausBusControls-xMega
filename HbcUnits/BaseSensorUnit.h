@@ -32,6 +32,22 @@ class BaseSensorUnit : public Reactive
          READ_MEASURMENT
       };
 
+      enum HwStatus
+      {
+         OK,
+         START_FAIL,
+         FAILTURE,
+         CRC_FAILTURE,
+         OUT_OF_MEMORY,
+         BUS_HUNG,
+         NOT_PRESENT,
+         ACK_TOO_LONG,
+         SYNC_TIMEOUT,
+         DATA_TIMEOUT,
+         CHECKSUM_ERROR,
+         ACK_MISSING
+      };
+
       struct Status
       {
          int8_t value;
@@ -263,7 +279,8 @@ class BaseSensorUnit : public Reactive
       ////    Constructors and destructors    ////
 
       inline BaseSensorUnit() :
-         timeSinceReport( 1 ), currentEvent( 0 ), lastEvent( 0 ), errorCounter( 0 )
+         timeSinceReport( 1 ), currentEvent( 0 ), lastEvent( 0 ),
+         errorCounter( 0 ), lastMeasurementDuration( 0 )
       {
          configuration = NULL;
       }
@@ -272,11 +289,26 @@ class BaseSensorUnit : public Reactive
 
       void notifyNewValue( Status newStatus );
 
+      virtual bool notifyEvent( const Event& event );
+
+      inline void* operator new( size_t size )
+      {
+         return allocOnce( size );
+      }
+
    protected:
 
       bool handleRequest( HBCP* message );
 
+      void run();
+
       uint16_t getMeasurementInterval();
+
+   private:
+
+      virtual HwStatus startMeasurement( uint16_t& duration ) = 0;
+
+      virtual HwStatus readMeasurement() = 0;
 
       ////    Additional operations    ////
 
@@ -285,9 +317,6 @@ class BaseSensorUnit : public Reactive
       inline void setConfiguration( EepromConfiguration* _config )
       {
          configuration = _config;
-
-         // force update of first measurement after startup
-         timeSinceReport = configuration->maxReportTime;
       }
 
    protected:
@@ -321,6 +350,8 @@ class BaseSensorUnit : public Reactive
 
       static const uint8_t debugLevel;
 
+      Status currentStatus;
+
       Status lastStatus;
 
       uint8_t timeSinceReport;
@@ -330,6 +361,8 @@ class BaseSensorUnit : public Reactive
       uint8_t lastEvent;
 
       uint8_t errorCounter;
+
+      uint16_t lastMeasurementDuration;
 
       ////    Relations and components    ////
 

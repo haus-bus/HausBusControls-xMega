@@ -30,15 +30,6 @@ class DS1820 : public BaseSensorUnit
       static const uint8_t WRITE_EE = 0x48;
       static const uint8_t RECALL_EE = 0xB8;
 
-      enum HwStatus
-      {
-         OK,
-         START_FAIL,
-         FAILTURE,
-         CRC_FAILTURE,
-         OUT_OF_MEMORY
-      };
-
       static const uint8_t SCRATCHPAD_SIZE = 9;
 
       static const uint8_t DS18B20_CONF_REG = 4;
@@ -71,13 +62,9 @@ class DS1820 : public BaseSensorUnit
 
       virtual bool notifyEvent( const Event& event );
 
-      inline void* operator new( size_t size );
-
       HwStatus readMeasurement();
 
-      void run();
-
-      HwStatus startMeasurement( bool allSensors = true );
+      HwStatus startMeasurement( uint16_t& duration );
 
    private:
 
@@ -146,11 +133,6 @@ class DS1820 : public BaseSensorUnit
       OneWire::RomCode romCode;
 
 };
-
-inline void* DS1820::operator new( size_t size )
-{
-   return allocOnce( size );
-}
 
 #endif
 

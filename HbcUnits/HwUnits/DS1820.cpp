@@ -66,6 +66,16 @@ DS1820::DS1820( const OneWire& _hardware, const OneWire::RomCode& _romCode ) :
    setId( ( ClassId::TEMPERATURE << 8 ) | ++numOfInstances );
 }
 
+bool DS1820::notifyEvent( const Event& event )
+{
+   // check power connection on startup
+   if ( event.isEvWakeup() && inStartUp() )
+   {
+      isSelfPowered();
+   }
+   return BaseSensorUnit::notifyEvent( event );
+}
+
 bool DS1820::isSelfPowered()
 {
    hardware.reset();
@@ -82,20 +92,7 @@ bool DS1820::isSensor( uint8_t familiyCode )
    return ( ( familiyCode == DS18B20_ID ) || ( familiyCode == DS18S20_ID ) );
 }
 
-bool DS1820::notifyEvent( const Event& event )
-{
-   if ( event.isEvWakeup() )
-   {
-      run();
-   }
-   else if ( event.isEvMessage() )
-   {
-      return handleRequest( event.isEvMessage()->getMessage() );
-   }
-   return false;
-}
-
-DS1820::HwStatus DS1820::readMeasurement()
+BaseSensorUnit::HwStatus DS1820::readMeasurement()
 {
    uint8_t sp[SCRATCHPAD_SIZE];
 
@@ -108,83 +105,31 @@ DS1820::HwStatus DS1820::readMeasurement()
    }
    if ( Crc8::hasError( sp, SCRATCHPAD_SIZE ) )
    {
-      return CRC_FAILTURE;
+      return BaseSensorUnit::CRC_FAILTURE;
    }
    notifyNewValue( convertToCelsius( sp ) );
 
-   return OK;
+   return BaseSensorUnit::OK;
 }
 
-void DS1820::run()
-{
-   if ( inStartUp() )
-   {
-      setConfiguration( ConfigurationManager::getConfiguration<EepromConfiguration>( id ) );
-      if ( configuration )
-      {
-         isSelfPowered();
-         startMeasurement();
-         SET_STATE_L1( RUNNING );
-         SET_STATE_L2( START_MEASUREMENT );
-      }
-      else
-      {
-         terminate();
-         ErrorMessage::notifyOutOfMemory( id );
-         return;
-      }
-   }
-   else if ( inIdle() )
-   {
-      setSleepTime( NO_WAKE_UP );
-   }
-   else if ( inRunning() )
-   {
-      Response event( getId() );
-
-      if ( inSubState( START_MEASUREMENT ) )
-      {
-         uint8_t error = startMeasurement();
-         if ( error )
-         {
-            event.setErrorCode( error );
-            event.queue();
-         }
-         setSleepTime( SystemTime::S );
-         SET_STATE_L2( READ_MEASURMENT );
-      }
-      else // READ_MEASURMENT
-      {
-         uint8_t error = readMeasurement();
-         if ( error )
-         {
-            event.setErrorCode( error );
-            event.queue();
-         }
-         setSleepTime( getMeasurementInterval() );
-         SET_STATE_L2( START_MEASUREMENT );
-      }
-   }
-
-}
-
-DS1820::HwStatus DS1820::startMeasurement( bool allSensors )
+BaseSensorUnit::HwStatus DS1820::startMeasurement( uint16_t& duration )
 {
    hardware.reset();
 
    if ( hardware.isIdle() )
    { // only send if bus is "idle" = high
-      hardware.sendCommand( CONVERT_T, allSensors ? 0 : (uint8_t*) &romCode );
+      hardware.sendCommand( CONVERT_T, (uint8_t*) &romCode );
       if ( !selfPowered )
       {
          hardware.enableParasite();
       }
-      return OK;
+      duration = SystemTime::S;
+      return BaseSensorUnit::OK;
    }
    else
    {
       ERROR_1( "OW not idle on startMeasurement" );
-      return START_FAIL;
+      return BaseSensorUnit::START_FAIL;
    }
 }
 

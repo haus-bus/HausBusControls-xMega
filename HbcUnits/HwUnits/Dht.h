@@ -23,8 +23,6 @@ class Dht : public BaseSensorUnit
 {
    public:
 
-      class Temperature;
-
       struct Data
       {
          uint8_t checksum;
@@ -32,38 +30,24 @@ class Dht : public BaseSensorUnit
          BaseSensorUnit::Status humidity;
       };
 
-      class Temperature : public BaseSensorUnit
-      {
-         ////    Constructors and destructors    ////
-
-         public:
-
-            Temperature( uint8_t instanceNumber );
-
-            ////    Operations    ////
-
-            virtual bool notifyEvent( const Event& event );
-      };
-
       ////    Constructors and destructors    ////
 
-      Dht( uint8_t instanceNumber, PortPin portPin );
+      Dht( uint8_t instanceNumber, PortPin portPin, bool isTemperature );
 
       ////    Operations    ////
 
-      void handleRunning();
-
-      virtual bool notifyEvent( const Event& event );
-
-      inline void* operator new( size_t size );
-
-      void run();
-
       ////    Additional operations    ////
 
-      Dht22* getHardware() const;
+      inline Dht22* getHardware() const
+      {
+         return (Dht22*) &hardware;
+      }
 
-      Temperature* getItsTemperature() const;
+   protected:
+
+      HwStatus readMeasurement();
+
+      HwStatus startMeasurement( uint16_t& duration );
 
    private:
 
@@ -81,13 +65,5 @@ class Dht : public BaseSensorUnit
    protected:
 
       Dht22 hardware;
-
-      Temperature itsTemperature;
 };
-
-inline void* Dht::operator new( size_t size )
-{
-   return allocOnce( size );
-}
-
 #endif

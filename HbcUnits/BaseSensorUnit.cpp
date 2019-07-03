@@ -32,6 +32,90 @@ uint16_t BaseSensorUnit::getMeasurementInterval()
    return SystemTime::S* Configuration::DEFAULT_REPORT_TIME_BASE;
 }
 
+bool BaseSensorUnit::notifyEvent( const Event& event )
+{
+   if ( event.isEvWakeup() )
+   {
+      run();
+   }
+   else if ( event.isEvMessage() )
+   {
+      return handleRequest( event.isEvMessage()->getMessage() );
+   }
+   return false;
+}
+
+void BaseSensorUnit::run()
+{
+   if ( inStartUp() )
+   {
+      setConfiguration( ConfigurationManager::getConfiguration<EepromConfiguration>( id ) );
+      if ( configuration )
+      {
+         SET_STATE_L1( IDLE );
+      }
+      else
+      {
+         terminate();
+         ErrorMessage::notifyOutOfMemory( id );
+         return;
+      }
+   }
+   else if ( inIdle() )
+   {
+      errorCounter = 0;
+      SET_STATE_L1( RUNNING );
+      SET_STATE_L2( START_MEASUREMENT );
+   }
+   else if ( inRunning() )
+   {
+      Response event( getId() );
+      HwStatus hwStatus;
+
+      if ( inSubState( START_MEASUREMENT ) )
+      {
+         hwStatus = startMeasurement( lastMeasurementDuration );
+         if ( hwStatus == OK )
+         {
+            SET_STATE_L2( READ_MEASURMENT );
+         }
+         setSleepTime( lastMeasurementDuration );
+      }
+      else // READ_MEASURMENT
+      {
+         hwStatus = readMeasurement();
+         setSleepTime( getMeasurementInterval() - lastMeasurementDuration );
+         SET_STATE_L2( START_MEASUREMENT );
+      }
+
+      if ( hwStatus == OK )
+      {
+         errorCounter = 0;
+      }
+      else
+      {
+         errorCounter++;
+         WARN_1( getId() << FSTR( " HwStatus not OK! " ) << (uint8_t)hwStatus );
+         if ( ( errorCounter % MAX_ERRORS ) == 0 )
+         {
+            uint8_t errorData[IResponse::MAX_ERROR_DATA];
+            memset( errorData, 0, sizeof( errorData ) );
+            errorData[0] = errorCounter;
+            event.setErrorCode( hwStatus, errorData );
+            event.queue();
+         }
+         else if ( errorCounter > 4 * MAX_ERRORS )
+         {
+            // too many errors have occurred, go into IDLE state until GET_STATUS is called
+            SET_STATE_L1( IDLE );
+            setSleepTime( NO_WAKE_UP );
+         }
+
+      }
+   }
+
+}
+
 void BaseSensorUnit::notifyNewValue( BaseSensorUnit::Status newStatus )
 {
    if ( !configuration || !configuration->reportTimeBase )
@@ -40,6 +124,7 @@ void BaseSensorUnit::notifyNewValue( BaseSensorUnit::Status newStatus )
       return;
    }
 
+   bool initialRun = ( currentEvent == 0 );
    uint8_t nextEvent = currentEvent;
 
    int16_t newStatusValue = newStatus.getCompleteValue();
@@ -63,7 +148,7 @@ void BaseSensorUnit::notifyNewValue( BaseSensorUnit::Status newStatus )
    // r, value is >= lower && < upper
    // a, value is >= upper
 
-   if ( ( hysteresis == 0 ) || ( currentEvent == 0 ) )
+   if ( ( hysteresis == 0 ) || initialRun )
    {
       // this is the first value after reset or hysteresis is disabled
       if ( newStatusValue < lowerThreshold )
@@ -119,7 +204,7 @@ void BaseSensorUnit::notifyNewValue( BaseSensorUnit::Status newStatus )
 
    if ( nextEvent != currentEvent )
    {
-      if ( currentEvent != 0 )
+      if ( !initialRun )
       {
          Response event( getId() );
          event.setEvent( nextEvent );
@@ -129,18 +214,27 @@ void BaseSensorUnit::notifyNewValue( BaseSensorUnit::Status newStatus )
       currentEvent = nextEvent;
    }
    newStatus.lastEvent = currentEvent;
+   currentStatus = newStatus;
 
-   timeSinceReport++;
-   if ( timeSinceReport > configuration->minReportTime )
+   if ( initialRun )
    {
-      if ( ( timeSinceReport > configuration->maxReportTime )
-         || ( abs( lastStatus.getCompleteValue() - newStatusValue ) > hysteresis ) )
+      lastStatus = newStatus;
+      timeSinceReport = configuration->maxReportTime;
+   }
+   else
+   {
+      timeSinceReport++;
+      if ( timeSinceReport > configuration->minReportTime )
       {
-         timeSinceReport = 0;
-         Response event( getId() );
-         event.setStatus( newStatus );
-         event.queue();
-         lastStatus = newStatus;
+         if ( ( timeSinceReport > configuration->maxReportTime )
+            || ( abs( lastStatus.getCompleteValue() - newStatusValue ) > hysteresis ) )
+         {
+            timeSinceReport = 0;
+            Response event( getId() );
+            event.setStatus( newStatus );
+            event.queue();
+            lastStatus = newStatus;
+         }
       }
    }
 }
@@ -171,14 +265,20 @@ bool BaseSensorUnit::handleRequest( HBCP* message )
       else if ( cf.isCommand( Command::GET_STATUS ) )
       {
          DEBUG_H1( FSTR( ".getStatus()" ) );
-         response.setStatus( lastStatus );
+         response.setStatus( currentStatus );
       }
       else
       {
          return false;
       }
       response.queue( getObject( message->header.getSenderId() ) );
+   }
 
+   // check for each communication if sensor is in IDLE state because of an error
+   if ( inIdle() )
+   {
+      // wake up sensor and try to start a new measurement
+      setSleepTime( WAKE_UP );
    }
 
    return true;

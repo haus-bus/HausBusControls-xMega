@@ -10,130 +10,57 @@
 
 const uint8_t Dht::debugLevel( DEBUG_LEVEL_OFF );
 
-Dht::Temperature::Temperature( uint8_t instanceNumber )
+Dht::Dht( uint8_t instanceNumber, PortPin portPin, bool isTemperature ) :
+   hardware( portPin )
 {
-   setId( ( ClassId::TEMPERATURE << 8 ) | instanceNumber );
+   uint8_t classId = isTemperature ? ClassId::TEMPERATURE : ClassId::HUMIDITY;
+   setId( ( classId << 8 ) | instanceNumber );
 }
 
-bool Dht::Temperature::notifyEvent( const Event& event )
+BaseSensorUnit::HwStatus Dht::startMeasurement( uint16_t& duration )
 {
-   if ( event.isEvWakeup() )
+   if ( hardware.isIdle() )
    {
-      if ( inStartUp() )
-      {
-         setConfiguration( ConfigurationManager::getConfiguration<EepromConfiguration>( id ) );
-         if ( configuration )
-         {
-            SET_STATE_L1( RUNNING );
-         }
-         else
-         {
-            terminate();
-            ErrorMessage::notifyOutOfMemory( id );
-            return true;
-         }
-      }
-      setSleepTime( NO_WAKE_UP );
+      // needs 1 - 10ms before result can be read out
+      duration = 5;
+      hardware.startMeasurement();
+      return BaseSensorUnit::OK;
    }
-   else if ( event.isEvMessage() )
-   {
-      return handleRequest( event.isEvMessage()->getMessage() );
-   }
-   return false;
+   // needs minimum 2s before next try can be started
+   duration = 3 * SystemTime::S;
+   return BaseSensorUnit::START_FAIL;
 }
 
-Dht::Dht( uint8_t instanceNumber, PortPin portPin ) :
-   hardware( portPin ), itsTemperature( instanceNumber )
-{
-   setId( ( ClassId::HUMIDITY << 8 ) | instanceNumber );
-}
-
-void Dht::handleRunning()
+BaseSensorUnit::HwStatus Dht::readMeasurement()
 {
    uint8_t rawData[sizeof( Data )];
    uint8_t error = hardware.read( rawData );
-   if ( error )
+   if ( !error )
    {
-      if ( errorCounter++ > MAX_ERRORS )
-      {
-         Response event( getId() );
-         event.setErrorCode( error );
-         event.queue();
-
-         Status status;
-         status.value = 127;
-         status.centiValue = 99;
-         notifyNewValue( status );
-         itsTemperature.notifyNewValue( status );
-         SET_STATE_L1( IDLE );
-      }
-   }
-   else
-   {
-      uint16_t help = ( ( rawData[4] << 8 ) + rawData[3] );
       Status status;
-      status.value = help / 10;
-      status.centiValue = 0;
-      notifyNewValue( status );
 
-      help = ( ( ( rawData[2] & 0x7F ) << 8 ) + rawData[1] );
-      status.value = help / 10;
-      status.centiValue = ( help % 10 ) * 10;
-      itsTemperature.notifyNewValue( status );
-
-      errorCounter = 0;
-   }
-   setSleepTime( getMeasurementInterval() );
-}
-
-bool Dht::notifyEvent( const Event& event )
-{
-   if ( event.isEvWakeup() )
-   {
-      run();
-   }
-   else if ( event.isEvMessage() )
-   {
-      return handleRequest( event.isEvMessage()->getMessage() );
-   }
-   return false;
-}
-
-void Dht::run()
-{
-   if ( inStartUp() )
-   {
-      setConfiguration( ConfigurationManager::getConfiguration<EepromConfiguration>( id ) );
-      if ( configuration )
+      if ( isClassId( ClassId::HUMIDITY ) )
       {
-         SET_STATE_L1( RUNNING );
+         // calculate humidity
+         uint16_t help = ( ( rawData[4] << 8 ) + rawData[3] );
+         status.value = help / 10;
+         status.centiValue = 0;
       }
       else
       {
-         terminate();
-         ErrorMessage::notifyOutOfMemory( id );
-         return;
+         // calculate temperature
+         uint16_t help = ( ( ( rawData[2] & 0x7F ) << 8 ) + rawData[1] );
+         status.value = help / 10;
+         status.centiValue = ( help % 10 ) * 10;
+         if ( rawData[2] & 0x80 )
+         {
+            // result is negative
+            status.value *= -1;
+         }
       }
-      setSleepTime( SystemTime::S );
+      notifyNewValue( status );
+      return BaseSensorUnit::OK;
    }
-   else if ( inIdle() )
-   {
-      setSleepTime( NO_WAKE_UP );
-   }
-   else if ( inRunning() )
-   {
-      handleRunning();
-   }
-
-}
-
-Dht22* Dht::getHardware() const
-{
-   return (Dht22*) &hardware;
-}
-
-Dht::Temperature* Dht::getItsTemperature() const
-{
-   return (Dht::Temperature*) &itsTemperature;
+   return (BaseSensorUnit::HwStatus)( BaseSensorUnit::BUS_HUNG + error );
 }
 

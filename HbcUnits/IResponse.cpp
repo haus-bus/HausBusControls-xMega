@@ -48,7 +48,7 @@ void IResponse::setErrorCode( uint8_t errorCode, uint8_t* errorData )
    *pData++ = errorCode;
    if ( errorData )
    {
-      for ( uint8_t i = 0; i < ( ControlFrame::DEFAULT_DATA_LENGTH - 2 ); i++ )
+      for ( uint8_t i = 0; i < MAX_ERROR_DATA; i++ )
       {
          pData[i] = errorData[i];
       }
