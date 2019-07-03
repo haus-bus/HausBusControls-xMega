@@ -9,7 +9,6 @@
 #define Electronics_SystemBoards_AR8_AR8_Boards_AR8_Boards_H
 
 #include <DefaultTypes.h>
-#include <Protocols/IrDecoder.h>
 #include <Security/ModuleId.h>
 #include "AR8.h"
 #include <Peripherals/TimerCounter.h>
@@ -34,8 +33,6 @@ class PortPin;
 
 class RS485Hw;
 
-extern IrDecoder* irDecoder;
-
 extern MOD_ID_SECTION const ModuleId moduleId;
 
 static const uint16_t ZCD_DEFAULT_PERIOD( 40960 );
@@ -51,7 +48,5 @@ extern DigitalOutput greenLed;
 extern Enc28j60 enc28j60;
 
 extern RS485Hw rs485Hw;
-
-void configureInfraRedHw( PortPin portPin, IrDecoder* decoder );
 
 #endif

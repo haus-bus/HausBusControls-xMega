@@ -16,10 +16,6 @@
 #include "DS1820.h"
 #endif
 
-#ifdef USE_IR
-#include "IrReceiver.h"
-#endif
-
 #ifdef USE_ANALOGIN
 #include "AnalogInputUnit.h"
 #endif
@@ -162,12 +158,6 @@ void DigitalPort::configureHw()
                uint8_t instanceId = subId + i + 1;
                new Dht( instanceId, dhtPin, true );
                new Dht( instanceId, dhtPin, false );
-            }
-#endif
-#ifdef USE_IR
-            else if ( pinFunction == ClassId::IR_RECEIVER )
-            {
-               new IrReceiver( subId + i + 1, PortPin( portNumber, i ) );
             }
 #endif
 #ifdef USE_OW

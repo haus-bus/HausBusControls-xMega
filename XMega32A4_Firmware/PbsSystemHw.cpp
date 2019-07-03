@@ -14,6 +14,7 @@
 #include <Security/ModuleId.h>
 #include <Peripherals/TimerCounter.h>
 #include <Peripherals/Usart.h>
+#include <Peripherals/WatchDog.h>
 #include <Gateway.h>
 #include <Protocols/SoftTwi.h>
 #include <Protocols/RS485Hw.h>
@@ -105,6 +106,17 @@ void PbsSystemHw::configurePwm( TimerCounter& timer )
 
    timer.configWGM( TC_WGMODE_SS_gc );
    timer.setPeriod( 100 );
+}
+
+void notifyBusy()
+{
+}
+
+void notifyIdle()
+{
+   #ifndef _DEBUG_
+   WatchDog::reset();
+   #endif
 }
 
 #ifdef SUPPORT_RS485

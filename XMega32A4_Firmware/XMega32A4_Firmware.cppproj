@@ -81,7 +81,6 @@
   <Value>_HEAP_SIZE_=2048</Value>
   <Value>_RULES_OFFSET_=2048</Value>
   <Value>SUPPORT_CALENDAR</Value>
-  <Value>USE_IR</Value>
   <Value>USE_DHT</Value>
   <Value>USE_OW</Value>
   <Value>DBG_PORT=PortD</Value>
@@ -130,7 +129,6 @@
   <Value>_HEAP_SIZE_=2048</Value>
   <Value>_RULES_OFFSET_=2048</Value>
   <Value>SUPPORT_CALENDAR</Value>
-  <Value>USE_IR</Value>
   <Value>USE_DHT</Value>
   <Value>USE_OW</Value>
   <Value>DBG_PORT=PortD</Value>
@@ -182,7 +180,6 @@
   <Value>_HEAP_SIZE_=2048</Value>
   <Value>_RULES_OFFSET_=2048</Value>
   <Value>SUPPORT_CALENDAR</Value>
-  <Value>USE_IR</Value>
   <Value>USE_DHT</Value>
   <Value>USE_OW</Value>
   <Value>DBG_PORT=PortD</Value>
@@ -343,14 +340,6 @@
       <SubType>compile</SubType>
       <Link>HbcUnits\HwUnits\InternalTemperatureUnit.h</Link>
     </Compile>
-    <Compile Include="..\HbcUnits\HwUnits\IrReceiver.cpp">
-      <SubType>compile</SubType>
-      <Link>HbcUnits\HwUnits\IrReceiver.cpp</Link>
-    </Compile>
-    <Compile Include="..\HbcUnits\HwUnits\IrReceiver.h">
-      <SubType>compile</SubType>
-      <Link>HbcUnits\HwUnits\IrReceiver.h</Link>
-    </Compile>
     <Compile Include="..\HbcUnits\HwUnits\Led.cpp">
       <SubType>compile</SubType>
       <Link>HbcUnits\HwUnits\Led.cpp</Link>
@@ -470,10 +459,6 @@
     <Compile Include="..\SwFramework\Protocols\HBCP.h">
       <SubType>compile</SubType>
       <Link>SwFramework\Protocols\HBCP.h</Link>
-    </Compile>
-    <Compile Include="..\SwFramework\Protocols\IrDecoder.h">
-      <SubType>compile</SubType>
-      <Link>SwFramework\Protocols\IrDecoder.h</Link>
     </Compile>
     <Compile Include="..\SwFramework\Protocols\KnxHw.h">
       <SubType>compile</SubType>
@@ -915,10 +900,6 @@
       <SubType>compile</SubType>
       <Link>Xmega\Protocols\Dht22.cpp</Link>
     </Compile>
-    <Compile Include="..\Xmega\Protocols\IrDecoder.cpp">
-      <SubType>compile</SubType>
-      <Link>Xmega\Protocols\IrDecoder.cpp</Link>
-    </Compile>
     <Compile Include="..\Xmega\Protocols\OneWire.cpp">
       <SubType>compile</SubType>
       <Link>Xmega\Protocols\OneWire.cpp</Link>
@@ -955,12 +936,6 @@
       <SubType>compile</SubType>
       <Link>Xmega\Protocols\RS485Hw.cpp</Link>
     </Compile>
-    <Compile Include="IrSupport.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="IrSupport.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="PbsSystem.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -971,9 +946,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="PbsSystemHw.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="mainSD6.cpp">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

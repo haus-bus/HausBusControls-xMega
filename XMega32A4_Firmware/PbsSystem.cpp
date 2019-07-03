@@ -82,3 +82,12 @@ void PbsSystem::start()
       Scheduler::runJobs();
    }
 }
+
+int main( int argc, char* argv[] )
+{
+   int status = 0;
+   {
+      PbsSystem::start();
+   }
+   return status;
+}
