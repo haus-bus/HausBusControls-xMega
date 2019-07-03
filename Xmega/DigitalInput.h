@@ -16,19 +16,19 @@ class DigitalInput : public PortPin
 
    public:
 
-      inline DigitalInput( PortPin _portPin ) :
+      inline DigitalInput( PortPin _portPin, bool config = true ) :
          PortPin( _portPin )
       {
-         if ( isValid() )
+         if ( config && isValid() )
          {
             configInput();
          }
       }
 
-      inline DigitalInput( uint8_t _portNumber, uint8_t _pinNumber ) :
+      inline DigitalInput( uint8_t _portNumber, uint8_t _pinNumber, bool config = true ) :
          PortPin( _portNumber, _pinNumber )
       {
-         if ( isValid() )
+         if ( config && isValid() )
          {
             configInput();
          }

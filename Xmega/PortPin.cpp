@@ -27,6 +27,11 @@ uint8_t PortPin::getPin() const
    return ( 1 << pinNumber );
 }
 
+uint16_t PortPin::waitPinState( uint16_t timeoutCount, bool state ) const
+{
+   return delayBit( timeoutCount, ( (uint8_t*) &getIoPort() ) + 8, getPin(), state );
+}
+
 uint8_t PortPin::isSet() const
 {
    return getIoPort().get() & getPin();
