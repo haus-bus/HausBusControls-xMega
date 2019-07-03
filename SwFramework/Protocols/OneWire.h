@@ -9,7 +9,7 @@
 #define HwProtocols_OneWire_H
 
 #include "Protocols.h"
-#include <PortPin.h>
+#include <DigitalOutput.h>
 
 class DS1820;
 
@@ -30,16 +30,20 @@ class OneWire
       static const uint8_t LAST_DEVICE = 0x00;
       static const uint8_t SEARCH_FIRST = 0xFF;
 
-
-      static const uint8_t DATA_ERROR = 0xFE;
-      static const uint8_t PRESENCE_ERROR = 0xFF;
-
       static const uint8_t MATCH_ROM = 0x55;
       static const uint8_t SKIP_ROM = 0xCC;
       static const uint8_t SEARCH_ROM = 0xF0;
 
+      enum ErrorCodes
+      {
+         NO_ERROR = 0,
+         BUS_HUNG_ERROR = 0xFD,
+         DATA_ERROR = 0xFE,
+         PRESENCE_ERROR = 0xFF
+      };
 
-      struct RomCode {
+      struct RomCode
+      {
          uint8_t family;
          uint8_t serial[6];
          uint8_t crc;
@@ -59,7 +63,7 @@ class OneWire
 
       inline uint8_t read();
 
-      uint8_t reset();
+      ErrorCodes reset();
 
       void scanAndCreateDevices();
 
@@ -80,26 +84,6 @@ class OneWire
 
       ////    Additional operations    ////
 
-      inline IoPort& getIoPort() const
-      {
-         return *ioPort;
-      }
-
-      inline void setIoPort( IoPort& p_ioPort )
-      {
-         ioPort = &p_ioPort;
-      }
-
-      inline uint8_t getPin() const
-      {
-         return pin;
-      }
-
-      inline void setPin( uint8_t p_pin )
-      {
-         pin = p_pin;
-      }
-
    private:
 
       inline static const uint8_t getDebugLevel()
@@ -110,9 +94,8 @@ class OneWire
       ////    Attributes    ////
 
    public:
-      uint8_t pin;
 
-      IoPort* ioPort;
+      PortPin ioPin;
 
 
    private:
@@ -122,19 +105,18 @@ class OneWire
 
 inline void OneWire::disableParasite()
 {
-   ioPort->clearPins( pin );
-   ioPort->setPinsAsInput( pin );
+   ioPin.configInput();
 }
 
 inline void OneWire::enableParasite()
 {
-   ioPort->setPins( pin );
-   ioPort->setPinsAsOutput( pin );
+   DigitalOutput out( ioPin );
+   out.set();
 }
 
 inline uint8_t OneWire::isIdle()
 {
-   return ioPort->isPinSet( pin );
+   return ioPin.isSet();
 }
 
 inline uint8_t OneWire::read()

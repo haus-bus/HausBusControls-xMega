@@ -11,7 +11,7 @@
 #include "Protocols.h"
 
 #include <Time/SystemTime.h>
-#include <PortPin.h>
+#include <DigitalOutput.h>
 
 class Dht22
 {
@@ -39,15 +39,15 @@ class Dht22
 
       ////    Operations    ////
 
+      void startMeasurement();
+
       uint8_t read( uint8_t* data );
+
+      bool isIdle();
 
    private:
 
-      inline void reset();
-
-      inline Errors waitForAck();
-
-      inline bool waitForIdle();
+      Errors waitForAck();
 
       ////    Additional operations    ////
 
@@ -55,7 +55,7 @@ class Dht22
 
       inline PortPin* getPortPin() const
       {
-         return (PortPin*) &portPin;
+         return (PortPin*) &ioPin;
       }
 
    private:
@@ -69,78 +69,11 @@ class Dht22
 
    public:
 
-      PortPin portPin;
+      PortPin ioPin;
 
    private:
 
       static const uint8_t debugLevel;
 };
-
-inline void Dht22::reset()
-{
-   DEBUG_M1( FSTR( "reset" ) );
-   IoPort& ioPort = portPin.getIoPort();
-   uint8_t pin = portPin.getPin();
-
-   {
-      CriticalSection doNotInterrupt;
-      ioPort.clearPins( pin );
-      ioPort.setPinsAsOutput( pin );
-   }
-   SystemTime::waitMs( 18 );
-}
-
-inline Dht22::Errors Dht22::waitForAck()
-{
-   CriticalSection doNotInterrupt;
-   uint8_t pin = portPin.getPin();
-   uint8_t* port = ( (uint8_t*) &portPin.getIoPort() ) + 8;
-
-   portPin.getIoPort().setPinsAsInput( pin );
-
-   // find the start of the ACK signal
-   uint8_t remaining = delayBit( COUNT_DELAY_BIT_US( ACK_TIMEOUT / 2 ), port, pin,
-                                 1 );
-   if ( !remaining )
-   {
-      DEBUG_M1( FSTR( "waitForAck not present" ) );
-      return NOT_PRESENT;
-   }
-
-   // find the transition of the ACK signal
-   remaining = delayBit( COUNT_DELAY_BIT_US( ACK_TIMEOUT ), port, pin, 0 );
-   if ( !remaining )
-   {
-      DEBUG_M1( FSTR( "waitForAck 0 too long" ) );
-      return ACK_MISSING;
-   }
-
-   // find the end of the ACK signal
-   remaining = delayBit( COUNT_DELAY_BIT_US( ACK_TIMEOUT ), port, pin, 1 );
-   if ( !remaining )
-   {
-      DEBUG_M1( FSTR( "waitForAck 1 too long" ) );
-      return ACK_TOO_LONG;
-   }
-
-   // find the end of the ACK signal
-   remaining = delayBit( COUNT_DELAY_BIT_US( ACK_TIMEOUT ), port, pin, 0 );
-   if ( !remaining )
-   {
-      DEBUG_M1( FSTR( "waitForDataSync too long" ) );
-      return SYNC_TIMEOUT;
-   }
-   return OK;
-}
-
-inline bool Dht22::waitForIdle()
-{
-   DEBUG_M1( FSTR( "wairForIdle" ) );
-   uint8_t* port = ( (uint8_t*) &portPin.getIoPort() ) + 8;
-   uint8_t pin = portPin.getPin();
-
-   // wait if data line is not idle for max 250uSec
-   return delayBit( COUNT_DELAY_BIT_US( IDLE_TIMEOUT ), port, pin, 1 );
-}
 
 #endif
